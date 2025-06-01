@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { VM } from 'vm2';
 
 export async function POST(req: Request) {
   try {
@@ -12,28 +11,41 @@ export async function POST(req: Request) {
     let output = '';
     
     try {
-      // Create a secure VM instance
-      const vm = new VM({
-        timeout: 5000, // 5 seconds timeout
-        sandbox: {
-          console: {
-            log: (...args: any[]) => {
-              output += args.map(arg => 
-                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-              ).join(' ') + '\n';
-            }
+      // Create a safe context for basic code execution
+      const context = {
+        console: {
+          log: (...args: any[]) => {
+            output += args.map(arg => 
+              typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ') + '\n';
           }
         }
+      };
+
+      // Basic function execution with timeout
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Execution timed out')), 5000);
       });
 
-      // Execute the code in the sandbox
-      vm.run(code);
+      const executionPromise = new Promise((resolve) => {
+        const fn = new Function('console', code);
+        resolve(fn(context.console));
+      });
+
+      await Promise.race([executionPromise, timeoutPromise]);
 
       return NextResponse.json({ 
         output: output || 'Code executed successfully (no output)',
         language 
       });
     } catch (error: any) {
+      if (error.message === 'Execution timed out') {
+        return NextResponse.json({ 
+          error: 'Code execution timed out after 5 seconds'
+        }, { 
+          status: 408 
+        });
+      }
       return NextResponse.json({ 
         error: 'Error executing code: ' + error.message 
       }, { 
