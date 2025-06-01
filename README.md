@@ -2,6 +2,10 @@
 
 A modern, VS Code-inspired online code editor built with Next.js and Monaco Editor. This web-based code editor provides a familiar development environment with real-time code execution capabilities.
 
+## Live Demo
+
+Try it out: [Online Code Editor](https://online-code-editor-mqm6g3hyj-aj0070s-projects.vercel.app/)
+
 ## Features
 
 - VS Code-like interface with dark theme
