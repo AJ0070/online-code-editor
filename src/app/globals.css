@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --editor-bg: #1a1a1a;
+  --editor-border: #2d2d2d;
+  --editor-text: #e0e0e0;
+  --accent-primary: #4f46e5;
+  --accent-secondary: #3730a3;
+  --panel-bg: #1f1f1f;
+  --success: #059669;
+  --error: #dc2626;
+}
+
+body {
+  @apply bg-[#141414] text-[#e0e0e0] antialiased;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.editor-layout {
+  @apply min-h-screen flex flex-col;
+}
+
+.editor-header {
+  @apply bg-[#141414] border-b border-[#2d2d2d] px-4 py-3;
+}
+
+.editor-main {
+  @apply flex-1 flex flex-col lg:flex-row gap-4 p-4;
+  height: calc(100vh - 60px);
+}
+
+.editor-section {
+  @apply bg-[var(--editor-bg)] rounded-lg overflow-hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.editor-container {
+  @apply h-full;
+  min-height: 400px;
+}
+
+@media (min-width: 1024px) {
+  .editor-container {
+    min-height: calc(100vh - 76px);
+  }
+}
+
+.output-container {
+  @apply bg-[var(--editor-bg)] rounded-lg overflow-hidden;
+  min-height: 200px;
+}
+
+.modern-button {
+  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2;
+}
+
+.primary-button {
+  @apply modern-button bg-[var(--accent-primary)] hover:bg-[var(--accent-secondary)] text-white;
+}
+
+.primary-button:disabled {
+  @apply opacity-60 cursor-not-allowed;
+}
+
+.output-content {
+  @apply font-mono text-sm p-4 overflow-auto;
+  color: var(--editor-text);
+  background: var(--editor-bg);
+  max-height: calc(100vh - 400px);
+}
+
+@media (min-width: 1024px) {
+  .output-content {
+    max-height: calc(100vh - 140px);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--editor-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 5px;
+  border: 2px solid var(--editor-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Status Messages */
+.status-bar {
+  @apply flex items-center gap-2 px-4 py-2 text-sm rounded-lg;
+}
+
+.status-success {
+  @apply bg-[var(--success)] bg-opacity-20 text-green-400;
+}
+
+.status-error {
+  @apply bg-[var(--error)] bg-opacity-20 text-red-400;
+}
+
+/* Language Selection */
+.language-select {
+  @apply bg-[#2d2d2d] border border-[#3d3d3d] rounded-lg px-3 py-2 text-sm text-[#e0e0e0] outline-none;
+}
+
+.language-select option {
+  @apply bg-[#2d2d2d] text-[#e0e0e0];
+} 
