@@ -23,7 +23,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     editor.getModel()?.setEOL(0); // Use \n for line endings
     editor.updateOptions({
       renderWhitespace: "none",
-      renderIndentGuides: false,
+      guides: {
+        indentation: false
+      },
       renderValidationDecorations: "editable",
     });
   };
